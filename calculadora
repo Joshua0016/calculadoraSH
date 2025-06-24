@@ -1,0 +1,62 @@
+#!/bin/bash
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+echo "Calculadora.sh"
+echo "Este es un programa que realiza operaciones como: suma, resta, multiplicación y división"
+echo
+echo
+echo "Deberás ingresar un número y luego el siguiente"
+echo "Seguido podrás elegir qué tipo de operación realizar"
+echo
+echo "Disfruta"
+
+fi
+
+
+
+read -p "ingresa el primer número :" num1
+read -p "ingresa el segundo número :" num2
+
+echo "ingresa el número correspondiente para la operación a realizar"
+echo "opción 1 suma"
+echo "opción 2 resta"
+echo "opción 3 multiplicar"
+echo "opción 4 dividir"
+read -p "ingresar opciones [1-4]" option
+
+if echo "$num1" | grep -Eq '^[+-]?[0-9]+([.][0-9]+)?$'&&
+   echo "$num2" | grep -Eq '^[+-]?[0-9]+([.][0-9]+)?$'; then
+case $option in
+	1)
+		resultado=$(echo "$num1+$num2" | bc)
+		echo "el resultado es :$resultado"
+		;;
+	2)
+		resultado=$(echo "$num1-$num2" | bc)
+		echo "el resultado es:$resultado"
+		;;
+	3)
+		resultado=$(echo "$num1*$num2" | bc)
+		echo "el resultado es $resultado"
+		;;
+
+	4)
+		if echo "$num2 == 0" | bc | grep -q 1; then
+			echo "no se puede dividir entre cero"
+			exit 1
+		else
+			resultado=$(echo "scale=3; $num1/$num2" | bc)
+			echo "el resultado es :$resultado"
+		fi
+		;;
+	*)
+		echo "Error..."
+		;;
+	esac
+
+else
+
+echo "opción inválida"
+
+fi
+
